@@ -7,7 +7,7 @@ from PIL import Image
 
 size = 150, 150
 
-for filename in os.listdir("data/validation/Carson_Woods/"):
+for filename in os.listdir("data/Carson_Woods/"):
     outfile = os.getcwd() + "/data/validation/Carson_Woods/" + filename
     print(outfile)
     try:

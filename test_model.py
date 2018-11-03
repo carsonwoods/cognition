@@ -4,8 +4,8 @@ from keras.models import load_model
 from keras.preprocessing.image import img_to_array, load_img
 
 test_model = load_model('./models/cognition_model.h5')
-img = load_img('./data/DogBenchmark.jpg',False,target_size=(150,150))
-img2 = load_img('./data/CatBenchmark.jpeg',False,target_size=(150,150))
+img = load_img('./data/webcamTest.jpeg',False,target_size=(150,150))
+img2 = load_img('./data/Dog.jpeg',False,target_size=(150,150))
 x = img_to_array(img)
 x2 = img_to_array(img2)
 x = np.expand_dims(x, axis=0)

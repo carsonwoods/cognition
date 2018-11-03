@@ -61,7 +61,7 @@ while True:
     )
 
     # Prints current amount of faces found in current frame
-    print("Found {0} faces!".format(len(faceArray)), end='\r')
+    # print("Found {0} faces!".format(len(faceArray)), end='\r')
 
 
     # Draws rectangle on frame so user can see live results
@@ -72,30 +72,40 @@ while True:
             # If we extract Region of Interest [ROI] from image then it is preprocessed
             # For future training and we need to do minimal cleaning
             count += 1
-            name = "data/Carson_Woods/face%d.jpg"%count
+            name = "data/Carson_Woods/%d.jpg"%count
             cv2.imwrite(name, ROI)
 
         cv2.rectangle(frame, (x,y), (x+w, y+h), (0, 255, 0), 2)
 
-        """
+
         # Load Keras Model
         classifier = load_model('./models/cognition_model.h5')
         classifier.compile(optimizer = 'rmsprop', loss = 'binary_crossentropy', metrics = ['accuracy'])
 
         # Set ROI to image object. Scale to 128x128.
         face = Image.fromarray(ROI, 'RGB')
-        size = 128,128
+        size = 150,150
         face.thumbnail(size, Image.ANTIALIAS)
 
         # Convert Image object back to numpy array.
         test_face = image.img_to_array(face)
         test_face = np.expand_dims(test_face, axis = 0)
 
+
         #predict the result
         result = classifier.predict(test_face)
+
         print(result[0])
 
-        """
+        if result[0] >= .5 and len(faceArray) != 0:
+            cv2.putText(frame, "Detected: Carson Woods",
+                        (50,50), cv2.FONT_HERSHEY_SIMPLEX,
+                        1, (255,0,0), 2)
+        else:
+            cv2.putText(frame, "No Known Face Detected",
+                        (50,50), cv2.FONT_HERSHEY_SIMPLEX,
+                        1, (255,0,0), 2)
+
     # Show the frame that has been drawn on
     cv2.imshow("Cognition", frame)
 

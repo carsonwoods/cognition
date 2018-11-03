@@ -1,5 +1,5 @@
-# cognition
-Facial Recognition based on Concurrnet Neural Networks
+# Cognition
+Facial Recognition based on Concurrent Neural Networks
 
 Uses OPENCV for Computer Vision to grab faces from images/video.
 Runs faces against a CNN to identify the person.

@@ -20,8 +20,12 @@ parser.add_argument('--collect',
                     help="Cognition will store face data")
 args = parser.parse_args()
 
+# Human Faces Cascade
+# cascadePath = "opencv_cascades/haarcascade_frontalface_default.xml"
 
-cascadePath = "opencv_cascades/haarcascade_frontalface_default.xml"
+# Cat Faces Cascade
+cascadePath = "opencv_cascades/haarcascade_frontalcatface_extended.xml"
+
 faceCascade = cv2.CascadeClassifier(cascadePath)
 
 

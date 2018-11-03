@@ -7,6 +7,10 @@ Developed by Carson Woods
 import numpy as np
 import cv2
 import argparse
+from keras.models import load_model
+from keras.preprocessing import image
+from PIL import Image
+
 
 
 # Set arguments for improving command line functionality
@@ -57,30 +61,44 @@ while True:
     )
 
     # Prints current amount of faces found in current frame
-    print("Found {0} faces!".format(len(faceArray)), end='\r')
+    # print("Found {0} faces!".format(len(faceArray)), end='\r')
 
 
     # Draws rectangle on frame so user can see live results
     for (x, y, w, h) in faceArray:
-
+        ROI = frame[y:y+h, x:x+w]
         # If collect argument is passed then data is written to training_data/
         if args.collect:
             # If we extract Region of Interest [ROI] from image then it is preprocessed
             # For future training and we need to do minimal cleaning
             count += 1
-            ROI = frame[y:y+h, x:x+w]
-            name = "training_data/face%d.jpg"%count
+            name = "data/validation/Carson_Woods/face%d.jpg"%count
             cv2.imwrite(name, ROI)
 
         cv2.rectangle(frame, (x,y), (x+w, y+h), (0, 255, 0), 2)
 
+        # Load Keras Model
+        classifier = load_model('./first_try.h5')
+        classifier.compile(optimizer = 'rmsprop', loss = 'binary_crossentropy', metrics = ['accuracy'])
+
+        # Set ROI to image object. Scale to 128x128.
+        face = Image.fromarray(ROI, 'RGB')
+        size = 128,128
+        face.thumbnail(size, Image.ANTIALIAS)
+
+        # Convert Image object back to numpy array.
+        test_face = image.img_to_array(face)
+        test_face = np.expand_dims(test_face, axis = 0)
+
+        #predict the result
+        result = classifier.predict(test_face)
+        print(result[0])
 
     # Show the frame that has been drawn on
     cv2.imshow("Cognition", frame)
 
     # If user types q the program exits
     if cv2.waitKey(1) & 0xFF == ord('q'):
-        print("Found {0} face(s) on final frame!".format(len(faceArray)))
         print("User Shutdown Signal Recieved. Shutting Down...")
         break;
 

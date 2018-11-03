@@ -1,5 +1,5 @@
 # cognition
-Facial Recognition based on Capsule Networks
+Facial Recognition based on Concurrnet Neural Networks
 
 Uses OPENCV for Computer Vision to grab faces from images/video.
 Runs faces against a CNN to identify the person.

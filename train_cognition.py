@@ -13,7 +13,6 @@ from keras.preprocessing import image
 from keras.preprocessing.image import ImageDataGenerator
 
 # Set Data Classification/Training Details
-num_classes = 1
 batch_size = 16
 epoch_count = 10
 nb_train_samples = 9000
@@ -43,13 +42,12 @@ model.add(Conv2D(64, (3, 3)))
 model.add(Activation('relu'))
 model.add(MaxPooling2D(pool_size=(2, 2)))
 
-# Add two fully connected layers
-model.add(Flatten())  # this converts our 3D feature maps to 1D feature vectors
+model.add(Flatten())
 model.add(Dense(64))
 model.add(Activation('relu'))
 model.add(Dropout(0.5))
 model.add(Dense(1))
-model.add(Activation('sigmoid'))
+model.add(Dense(num_classes, activation='softmax'))
 
 model.compile(loss='binary_crossentropy',
               optimizer='rmsprop',

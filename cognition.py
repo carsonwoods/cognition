@@ -20,10 +20,6 @@ parser.add_argument('--collect',
                     help="Cognition will store face data")
 args = parser.parse_args()
 
-# Human Faces Cascade
-# cascadePath = "opencv_cascades/haarcascade_frontalface_default.xml"
-
-# Cat Faces Cascade
 cascadePath = "opencv_cascades/haarcascade_frontalface_default.xml"
 
 faceCascade = cv2.CascadeClassifier(cascadePath)
@@ -76,7 +72,7 @@ while True:
             # If we extract Region of Interest [ROI] from image then it is preprocessed
             # For future training and we need to do minimal cleaning
             count += 1
-            name = "data/validation/Carson_Woods/face%d.jpg"%count
+            name = "data/Carson_Woods/face%d.jpg"%count
             cv2.imwrite(name, ROI)
 
         cv2.rectangle(frame, (x,y), (x+w, y+h), (0, 255, 0), 2)

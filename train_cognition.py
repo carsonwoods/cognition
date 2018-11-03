@@ -88,4 +88,4 @@ model.fit_generator(
     validation_data=validation_generator,
     validation_steps=nb_validation_samples // batch_size)
 
-model.save('first_try.h5')
+model.save('cognition_model.h5')

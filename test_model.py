@@ -14,7 +14,7 @@ from keras.preprocessing.image import ImageDataGenerator
 from keras.models import load_model
 
 
-classifier = load_model('./first_try.h5')
+classifier = load_model('./models/first_try.h5')
 classifier.compile(optimizer = 'rmsprop', loss = 'binary_crossentropy', metrics = ['accuracy'])
 
 

@@ -78,7 +78,7 @@ while True:
         cv2.rectangle(frame, (x,y), (x+w, y+h), (0, 255, 0), 2)
 
         # Load Keras Model
-        classifier = load_model('./first_try.h5')
+        classifier = load_model('./models/cognition_model.h5')
         classifier.compile(optimizer = 'rmsprop', loss = 'binary_crossentropy', metrics = ['accuracy'])
 
         # Set ROI to image object. Scale to 128x128.

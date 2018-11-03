@@ -24,7 +24,7 @@ args = parser.parse_args()
 # cascadePath = "opencv_cascades/haarcascade_frontalface_default.xml"
 
 # Cat Faces Cascade
-cascadePath = "opencv_cascades/haarcascade_frontalcatface_extended.xml"
+cascadePath = "opencv_cascades/haarcascade_frontalface_default.xml"
 
 faceCascade = cv2.CascadeClassifier(cascadePath)
 
@@ -65,7 +65,7 @@ while True:
     )
 
     # Prints current amount of faces found in current frame
-    # print("Found {0} faces!".format(len(faceArray)), end='\r')
+    print("Found {0} faces!".format(len(faceArray)), end='\r')
 
 
     # Draws rectangle on frame so user can see live results
@@ -81,6 +81,7 @@ while True:
 
         cv2.rectangle(frame, (x,y), (x+w, y+h), (0, 255, 0), 2)
 
+        """
         # Load Keras Model
         classifier = load_model('./models/cognition_model.h5')
         classifier.compile(optimizer = 'rmsprop', loss = 'binary_crossentropy', metrics = ['accuracy'])
@@ -98,6 +99,7 @@ while True:
         result = classifier.predict(test_face)
         print(result[0])
 
+        """
     # Show the frame that has been drawn on
     cv2.imshow("Cognition", frame)
 

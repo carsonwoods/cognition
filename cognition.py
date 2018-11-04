@@ -118,7 +118,8 @@ while True:
 
     # Show the frame that has been drawn on
     cv2.imshow("Cognition", frame)
-    out.write(frame);
+    if args.demo == True:
+        out.write(frame)
 
     # If user types q the program exits
     if cv2.waitKey(1) & 0xFF == ord('q'):

@@ -109,7 +109,7 @@ while True:
         print(result[0])
 
         if result[0] >= .5 and len(faceArray) != 0:
-            cv2.putText(frame, "Detected: Carson Woods",
+            cv2.putText(frame, "Face Detected",
                         (50,50), cv2.FONT_HERSHEY_SIMPLEX,
                         1, (255,0,0), 2)
 

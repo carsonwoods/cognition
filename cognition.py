@@ -18,27 +18,34 @@ parser = argparse.ArgumentParser(description='Use arguments to change behavior o
 parser.add_argument('--collect',
                     action="store_true",
                     help="Cognition will store face data")
+parser.add_argument('--demo',
+                    action="store_true",
+                    help="switches engine to demo mode")
 args = parser.parse_args()
 
 cascadePath = "opencv_cascades/haarcascade_frontalface_default.xml"
 
 faceCascade = cv2.CascadeClassifier(cascadePath)
 
-
-# Create VideoCapture CV2 object on default capture device.
-video_capture = cv2.VideoCapture(0)
-if video_capture.isOpened():
-    print("Camera Intialized Successfully")
+if args.demo==False:
+    # Create VideoCapture CV2 object on default capture device.
+    video_capture = cv2.VideoCapture(0)
+    if video_capture.isOpened():
+        print("Camera Intialized Successfully")
+else:
+    video_capture = cv2.VideoCapture("./demo/WebcamDemo.mp4")
+    fourcc = cv2.VideoWriter_fourcc(*'XVID')
+    out = cv2.VideoWriter('./demo/ProcessedWebcam.mp4',fourcc, 30.0, (1080,720))
 
 # Count to name files stored
 count = 0
-
+result = [0]
 # Frame Recording Loop. Records frames of images and uses the cascade to classify faces.
 while True:
     # Using read rather than get so it automatically decodes. Uses ffmpeg for image decoding.
     # Additionally retVal is important if reading from file rather than camera.
     # FPS is captured at max FPS of camera, however face recognition is limited by CPU speed.
-    retVal, frame = video_capture.read()
+    ret, frame = video_capture.read()
 
     # Converts each captured frame to greyScale as a form of preprocessing
     grayFrame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
@@ -85,7 +92,7 @@ while True:
         # Set ROI to image object. Scale to 128x128.
         face = Image.fromarray(ROI, 'RGB')
         size = 150,150
-        face.thumbnail(size, Image.ANTIALIAS)
+        face = face.resize(size, Image.ANTIALIAS)
 
         # Convert Image object back to numpy array.
         test_face = image.img_to_array(face)
@@ -93,7 +100,11 @@ while True:
 
 
         #predict the result
-        result = classifier.predict(test_face)
+        try:
+            result = classifier.predict(test_face)
+        except:
+            print("Error, could not complete classification.")
+            result[0] = 0
 
         print(result[0])
 
@@ -101,20 +112,28 @@ while True:
             cv2.putText(frame, "Detected: Carson Woods",
                         (50,50), cv2.FONT_HERSHEY_SIMPLEX,
                         1, (255,0,0), 2)
-        else:
-            cv2.putText(frame, "No Known Face Detected",
-                        (50,50), cv2.FONT_HERSHEY_SIMPLEX,
-                        1, (255,0,0), 2)
+
+    count+=1
+    print(count)
 
     # Show the frame that has been drawn on
     cv2.imshow("Cognition", frame)
+    out.write(frame);
 
     # If user types q the program exits
     if cv2.waitKey(1) & 0xFF == ord('q'):
         print("User Shutdown Signal Recieved. Shutting Down...")
         break;
 
+    if ret == False:
+        break;
+
 # Destroy video_capture object. Removes reference to capture device.
 video_capture.release()
+cv2.destroyAllWindows()
+
+if args.demo == True:
+    out.release();
+
 if video_capture.isOpened() == False:
     print("Camera Deinitialized Successfully")
